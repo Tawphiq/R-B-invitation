@@ -1,4 +1,4 @@
-// Burnt-orange wax seal with an irregular poured edge and an embossed monogram.
+// Burnt-orange wax seal with an irregular poured edge, pressed with "Open".
 
 const rand = (i) => {
   const s = Math.sin(i * 12.9898) * 43758.5453;
@@ -41,14 +41,12 @@ export default function Seal({ className = "", id = "seal" }) {
       <circle r="37" fill="none" stroke="rgba(60,18,4,.45)" strokeWidth="1.6" />
       <circle r="38.4" fill="none" stroke="rgba(255,200,160,.28)" strokeWidth="1" />
       <circle r="31" fill="none" stroke="rgba(255,200,160,.22)" strokeWidth=".7" />
-      <g fontFamily="'Playfair Display', Georgia, serif" textAnchor="middle">
-        <text y="9.5" fontSize="27" fill="rgba(255,205,170,.32)" transform="translate(.7 .9)">
-          R<tspan fontStyle="italic" fontSize="19" dx="1">&amp;</tspan>
-          <tspan dx="1">B</tspan>
+      <g fontFamily="'Playfair Display', Georgia, serif" fontStyle="italic" fontSize="25" textAnchor="middle">
+        <text y="8" fill="rgba(60,18,4,.5)" transform="translate(-.6 -.8)">
+          Open
         </text>
-        <text y="9.5" fontSize="27" fill="#6E270A">
-          R<tspan fontStyle="italic" fontSize="19" dx="1">&amp;</tspan>
-          <tspan dx="1">B</tspan>
+        <text y="8" fill="#F8DDC6">
+          Open
         </text>
       </g>
     </svg>

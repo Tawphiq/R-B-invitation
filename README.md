@@ -1,6 +1,6 @@
 # Richmond & Beatrice: wedding invitation
 
-A digital wedding invitation built with Vite and React. Guests open a wax-sealed envelope, then scroll a boho floral invitation: photo frames, ceremony details, countdown and calendar, dress code, venue map, and an RSVP form.
+A digital wedding invitation built with Vite and React. Guests open a wax-sealed envelope, which starts soft background music, then scroll a boho floral invitation with parallax depth: photo frames, ceremony details, countdown and calendar, dress code, venue map, and an RSVP form.
 
 ```bash
 npm install
@@ -13,10 +13,12 @@ npm run build     # production build in dist/
 | Path | Purpose |
 | --- | --- |
 | `src/wedding.js` | All invitation content: names, date, venue, coordinates, colours, photos |
-| `src/components/` | `Envelope` (opening), `Cover`, `Ceremony`, `Gallery`, `Celebration`, `DressCode`, `Venue`, `Closing`, `RsvpDialog` |
+| `src/components/` | `Envelope` (opening), `Cover`, `Ceremony`, `Gallery`, `Celebration`, `DressCode`, `Venue`, `Closing`, `RsvpDialog`, `Music` (background music and its toggle) |
+| `src/parallax.js` | GSAP ScrollTrigger parallax: which layers drift, and by how much |
 | `src/assets/` | Watercolour florals, leaves and floral band artwork |
 | `src/styles.css` | Design tokens and styles |
 | `public/richmond-beatrice.ics` | Calendar file for Apple Calendar / Outlook |
+| `public/music/` | Background music |
 | `rsvp-apps-script.gs` | Google Apps Script that saves RSVPs to a Google Sheet |
 
 ## 1. Connect the RSVP form (about 5 minutes)
@@ -65,9 +67,17 @@ Add `?to=` with the guest's name to the link you send. The name is written on th
 https://your-site.example/?to=Kwame%20%26%20Ama%20Mensah
 ```
 
-Use `%20` for spaces and `%26` for `&`. Without `?to=`, the envelope reads "For our dear guest".
+Use `%20` for spaces and `%26` for `&`. Without `?to=`, the envelope reads "Cordially invite our dear guest".
 
-The envelope opens once per browser session. Links ending in `#rsvp` skip the envelope and open the RSVP form directly.
+The envelope greets guests on every visit, including after a refresh. Links ending in `#rsvp` skip the envelope and open the RSVP form directly.
+
+## Music
+
+Tapping the envelope's "Open" seal starts the music (browsers only allow sound after a tap). Guests can pause it with the round button above the reply button, and it rests while the tab is in the background.
+
+To use your own song, put an MP3 in `public/music/` and set `music` in `src/wedding.js`, for example `music: "music/our-song.mp3"`. Keep it small (around 3 MB) since many guests open the link on mobile data. Set it to `""` to turn music off.
+
+The default track is Pachelbel's Canon in D performed by the Air Force Strings of the U.S. Air Force Band. As a work of the U.S. federal government it is in the public domain ([source](https://commons.wikimedia.org/wiki/File:Canon_(2004)_-_Strolling_Strings_-_United_States_Air_Force_Band.mp3)). It was trimmed and re-encoded at 96 kbps with a short fade at each end, so the loop is seamless.
 
 ## Notes
 

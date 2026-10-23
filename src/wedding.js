@@ -35,7 +35,11 @@ export const photos = {
   gallery: [],
 };
 
-export const closingLine = "Your presence would be the greatest gift we could receive!";
+// Background music, started by the envelope tap. Put an MP3 in public/music/ and name it here; "" turns music off.
+// Default: Pachelbel's Canon in D by the Air Force Strings (U.S. Air Force Band), public domain, via Wikimedia Commons.
+export const music = "music/canon-in-d.mp3";
+
+export const closingLine ="Your presence would be the greatest gift we could receive!";
 
 export const guestCounts = ["1", "2", "3", "4", "5+"];
 
