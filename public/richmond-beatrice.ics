@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Richmond and Beatrice//Wedding//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:richmond-beatrice-20261128@wedding
+DTSTAMP:20261023T000000Z
+DTSTART:20261128T120000Z
+DTEND:20261128T180000Z
+SUMMARY:Richmond & Beatrice - Wedding
+LOCATION:Esereso Divine Junction\, Kumasi\, Ghana
+GEO:6.657840;-1.560961
+DESCRIPTION:Wedding celebration of Richmond & Beatrice. Dress code: brown\, ash\, burnt orange and beige.
+END:VEVENT
+END:VCALENDAR
