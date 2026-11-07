@@ -1,6 +1,6 @@
 # Richmond & Beatrice: wedding invitation
 
-A digital wedding invitation built with Vite and React. Guests open a wax-sealed envelope, which starts soft background music, then scroll a boho floral invitation with parallax depth: photo frames, ceremony details, countdown and calendar, dress code, venue map, and an RSVP form.
+A digital wedding invitation built with Vite and React. Guests open a wax-sealed envelope, which starts soft background music, then scroll a boho floral invitation with parallax depth: ceremony details, photo gallery, countdown and calendar, dress code, venue map, and an RSVP form.
 
 ```bash
 npm install
@@ -20,24 +20,26 @@ npm run build     # production build in dist/
 | `public/richmond-beatrice.ics` | Calendar file for Apple Calendar / Outlook |
 | `public/gallery/` | Photo Gallery images |
 | `public/music/` | Background music |
-| `rsvp-apps-script.gs` | Google Apps Script that saves RSVPs to a Google Sheet |
 
-## 1. Connect the RSVP form (about 5 minutes)
+## 1. RSVP replies (Google Form)
 
-1. Create a new Google Sheet, for example "R&B Wedding RSVPs".
-2. In the sheet, open **Extensions → Apps Script**.
-3. Replace the editor contents with `rsvp-apps-script.gs` and save.
-4. Click **Deploy → New deployment**, choose type **Web app**, set
-   - Execute as: **Me**
-   - Who has access: **Anyone**
-5. Authorise when asked, then copy the **Web app URL** (ends in `/exec`).
-6. Give the URL to the build:
-   - **Locally / Netlify:** copy `.env.example` to `.env` and set `VITE_RSVP_ENDPOINT=<url>`. On Netlify, add the same name under **Site configuration → Environment variables**.
-   - **GitHub Pages:** add a repository variable `VITE_RSVP_ENDPOINT` under **Settings → Secrets and variables → Actions → Variables**.
+The RSVP dialog sends each reply straight to the couple's Google Form, <https://forms.gle/DTYVYwgcxy6L7KZ28>. Replies appear in the form's **Responses** tab, with a timestamp; **Link to Sheets** there collects them in a Google Sheet too.
 
-Replies then appear as rows in the **RSVPs** tab: time received, attendance, name(s), guest count.
+The questions are matched up in `rsvpForm` in `src/wedding.js`:
 
-Until the URL is set, the form tells guests that online replies aren't switched on yet.
+| Invitation field | Form question | Sent as |
+| --- | --- | --- |
+| Full name(s) | "Full Name" (`entry.1710590140`) | as typed |
+| Contact number | "Contact" (`entry.2095523272`) | as typed |
+| Will you attend? | "Can you make it" (`entry.1768927054`) | `Yes` / `No` |
+
+All three are required on both forms. The invitation can also ask accepting guests how many are coming, but only once the form has a question for it: add a **Short answer** question such as "Number of guests", then put its entry ID in `rsvpForm.guests` (it is sent as `1`–`5+`, or `0` for a decline).
+
+To find a question's entry ID, open **⋮ → Get pre-filled link** in the form editor, type anything into each answer, click **Get link** and copy it. The link has an `entry.<number>=` part for each question.
+
+Google rejects a reply without telling the guest if a required question is missing or an answer doesn't match a multiple-choice option, so after changing the form, update `rsvpForm` and send one test reply. Leave sign-in requirements off (**Collect email addresses: Verified**, **Limit to 1 response**), because replies come from the website rather than a signed-in Google account.
+
+Set `action` to `""` to switch online replies off; the dialog then asks guests to reply to the couple directly.
 
 ## 2. Publish the site
 
@@ -48,17 +50,15 @@ Share the resulting link with guests, for example over WhatsApp.
 
 ## Adding photos
 
-Put image files in `public/` and list them in `photos` in `src/wedding.js`:
+Put image files in `public/gallery/` and list them in `photos` in `src/wedding.js`:
 
 ```js
 export const photos = {
-  groom: "photos/richmond.jpg",   // tilted frame beside "Groom"
-  bride: "photos/beatrice.jpg",   // tilted frame beside "Bride"
   gallery: ["gallery/1.jpeg", "gallery/2.jpeg", "gallery/3.jpeg", "gallery/4.jpeg"],
 };
 ```
 
-Empty frames show the couple's initials, and the Photo Gallery section stays hidden until `gallery` has photos. Three photos show as one tall on the left with two stacked on the right; four or more show as portrait tiles, two to a row (4:5, cropped from the centre).
+The Photo Gallery section stays hidden until `gallery` has photos. Three photos show as one tall on the left with two stacked on the right; four or more show as portrait tiles, two to a row (4:5). Each photo drifts slowly inside its tile as the page scrolls, so a little of its top and bottom is cropped at any moment; keep faces away from the very edges.
 
 ## Personal links for guests
 

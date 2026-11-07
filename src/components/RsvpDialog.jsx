@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { RSVP_ENDPOINT, guestCounts, event } from "../wedding.js";
+import { rsvpForm, guestCounts, event } from "../wedding.js";
 
 const ACCEPT = "Joyfully Accepts";
 const DECLINE = "Sorry, I cannot make it";
@@ -8,15 +8,18 @@ export default function RsvpDialog({ open, onClose, guest }) {
   const dialogRef = useRef(null);
   const [attendance, setAttendance] = useState("");
   const [name, setName] = useState(guest || "");
+  const [contact, setContact] = useState("");
   const [guests, setGuests] = useState("");
   const [status, setStatus] = useState({ text: "", error: false });
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(null);
 
   const nameRef = useRef(null);
+  const contactRef = useRef(null);
   const acceptRef = useRef(null);
   const firstGuestRef = useRef(null);
   const accepts = attendance === ACCEPT;
+  const asksGuests = accepts && Boolean(rsvpForm.guests);
 
   useEffect(() => {
     const d = dialogRef.current;
@@ -36,22 +39,25 @@ export default function RsvpDialog({ open, onClose, guest }) {
   async function submit(e) {
     e.preventDefault();
     const trimmed = name.trim();
+    const phone = contact.trim();
     if (!trimmed) return fail("Please enter your full name.", nameRef);
+    if (!phone) return fail("Please enter your phone number.", contactRef);
     if (!attendance) return fail("Please choose whether you will attend.", acceptRef);
-    if (accepts && !guests) return fail("Please choose how many guests are attending.", firstGuestRef);
-    if (!RSVP_ENDPOINT) {
+    if (asksGuests && !guests) return fail("Please choose how many guests are attending.", firstGuestRef);
+    if (!rsvpForm.action) {
       return fail("Online replies are not switched on yet. Please send your reply to the couple directly.");
     }
 
     setSending(true);
     setStatus({ text: "", error: false });
     try {
-      // Apps Script does not send CORS headers, so the response is opaque; a network error still throws.
-      await fetch(RSVP_ENDPOINT, {
-        method: "POST",
-        mode: "no-cors",
-        body: new URLSearchParams({ attendance, name: trimmed, guests: accepts ? guests : "0" }),
-      });
+      const { attendance: att } = rsvpForm;
+      const body = new URLSearchParams({ [att.entry]: accepts ? att.accept : att.decline });
+      if (rsvpForm.name) body.append(rsvpForm.name, trimmed);
+      if (rsvpForm.contact) body.append(rsvpForm.contact, phone);
+      if (rsvpForm.guests) body.append(rsvpForm.guests, accepts ? guests : "0");
+      // Google Forms does not send CORS headers, so the response is opaque; a network error still throws.
+      await fetch(rsvpForm.action, { method: "POST", mode: "no-cors", body });
       setSent({ accepts, first: trimmed.split(/\s+/)[0] });
     } catch {
       fail("Your reply could not be sent. Check your connection and try again.");
@@ -121,6 +127,23 @@ export default function RsvpDialog({ open, onClose, guest }) {
               }}
             />
 
+            <label className="rsvp-label" htmlFor="rsvp-contact">
+              Contact number
+            </label>
+            <input
+              ref={contactRef}
+              id="rsvp-contact"
+              className="rsvp-input"
+              type="tel"
+              autoComplete="tel"
+              placeholder="Enter your phone number"
+              value={contact}
+              onChange={(e) => {
+                setContact(e.target.value);
+                clearStatus();
+              }}
+            />
+
             <fieldset className="rsvp-set">
               <legend className="rsvp-label">Will you attend?</legend>
               {[ACCEPT, DECLINE].map((value, i) => (
@@ -150,7 +173,7 @@ export default function RsvpDialog({ open, onClose, guest }) {
               ))}
             </fieldset>
 
-            {accepts && (
+            {asksGuests && (
               <fieldset className="rsvp-set">
                 <legend className="rsvp-label">Number of guests attending</legend>
                 <div className="rsvp-counts">

@@ -29,11 +29,8 @@ export const palette = [
   { name: "Beige", hex: "#DCCAAB" },
 ];
 
-// Photos: put image files in public/ and list them here, e.g. "photos/richmond.jpg" or "gallery/5.jpeg".
-// Empty frames show the couple's initials; the gallery section is hidden until it has photos.
+// Photo Gallery: put image files in public/gallery/ and list them here; an empty list hides the section.
 export const photos = {
-  groom: "",
-  bride: "",
   gallery: ["gallery/1.jpeg", "gallery/2.jpeg", "gallery/3.jpeg", "gallery/4.jpeg"],
 };
 
@@ -45,5 +42,13 @@ export const closingLine ="Your presence would be the greatest gift we could rec
 
 export const guestCounts = ["1", "2", "3", "4", "5+"];
 
-// Google Apps Script web-app URL that stores replies in a Google Sheet (see README.md).
-export const RSVP_ENDPOINT = import.meta.env.VITE_RSVP_ENDPOINT || "";
+// Replies are sent to the couple's Google Form (https://forms.gle/DTYVYwgcxy6L7KZ28); see README.md.
+// Each value is a question's entry ID, and the answers must match the form's options exactly.
+// The invite only asks for the guest count when `guests` has an entry ID; "" for `action` turns online replies off.
+export const rsvpForm = {
+  action: "https://docs.google.com/forms/d/e/1FAIpQLSefZ3l1snBisaEOfeo9ljPta3qMdDP-m34gjyw3nr3W94Bong/formResponse",
+  name: "entry.1710590140", // "Full Name"
+  attendance: { entry: "entry.1768927054", accept: "Yes", decline: "No" }, // "Can you make it"
+  contact: "entry.2095523272", // "Contact"
+  guests: "", // the form has no guest-count question
+};

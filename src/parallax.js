@@ -9,19 +9,18 @@ gsap.registerPlugin(ScrollTrigger);
 // a positive one lags behind it (far).
 
 // The cover starts on screen, so its layers begin at rest and spread apart as it scrolls away.
-// Each photo moves with its name, and the groom's side only ever pulls away from the bride's,
-// so the tightly overlapped layout never collides with itself.
+// The groom's name only ever pulls away from the band and the bride's name, so nothing collides.
 const COVER = [
   [".cover-flowers", -110],
-  [".frame-groom, .who-groom", -50],
-  [".frame-bride, .who-bride, .cover-band", 20],
+  [".who-groom", -50],
+  [".who-bride, .cover-band", 20],
 ];
 
-function drift(targets, from, to, trigger, { start = "top bottom", end = "bottom top", prop = "--py" } = {}) {
+function drift(targets, from, to, trigger, { start = "top bottom", end = "bottom top", prop = "--py", unit = "px" } = {}) {
   gsap.fromTo(
     targets,
-    { [prop]: `${from}px` },
-    { [prop]: `${to}px`, ease: "none", scrollTrigger: { trigger, start, end, scrub: 0.4 } },
+    { [prop]: `${from}${unit}` },
+    { [prop]: `${to}${unit}`, ease: "none", scrollTrigger: { trigger, start, end, scrub: 0.4 } },
   );
 }
 
@@ -32,6 +31,8 @@ export function startParallax() {
     // Faded leaves behind the text lag behind the page; the floral sprigs run ahead of it.
     gsap.utils.toArray(".leafy").forEach((el) => drift(el, -60, 60, el, { prop: "--leaves-y" }));
     gsap.utils.toArray(".sprig").forEach((el) => drift(el, 70, -70, el.parentElement));
+    // Gallery photos lag behind the page inside their tiles: bottom edge showing as a tile enters, top edge as it leaves.
+    gsap.utils.toArray(".gallery-tile img").forEach((el) => drift(el, -20, 0, el.parentElement, { prop: "--gy", unit: "%" }));
     // The closing garland rises into place as the page ends.
     drift(".closing-flowers", 90, 0, ".closing", { end: "bottom bottom" });
   });

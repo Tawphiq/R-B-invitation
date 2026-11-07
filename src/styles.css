@@ -1,6 +1,6 @@
 /* Layout: opens with a wax-sealed envelope; the invitation inside is one centred paper column
    (phone-width, framed on larger screens) in a boho floral style: watercolour anemones and
-   eucalyptus, faded leaves behind the text, tilted photo frames over a dark floral band,
+   eucalyptus, faded leaves behind the text, the couple's names either side of a dark floral band,
    classic serif headings, script ampersand. Single deliberate light look. */
 :root {
   --bg: #FFFAF7;
@@ -312,7 +312,7 @@ img { max-width: 100%; }
 
 /* ---------- Cover ---------- */
 .cover { position: relative; container-type: inline-size; }
-.cover-stage { position: relative; height: 172cqw; }
+.cover-stage { position: relative; height: 130cqw; }
 .cover-stage > * { position: absolute; }
 .cover-flowers {
   top: 0;
@@ -325,37 +325,20 @@ img { max-width: 100%; }
 .cover-band {
   left: 0;
   right: 0;
-  top: 104cqw;
+  top: 88cqw;
   height: 15cqw;
   z-index: 1;
   background: #3B2216 url("./assets/floral-band.webp") center / cover;
   box-shadow: inset 0 6px 10px -6px rgba(0, 0, 0, .5), inset 0 -6px 10px -6px rgba(0, 0, 0, .5);
 }
-.frame {
-  z-index: 2;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  aspect-ratio: 3 / 4;
-  background: rgba(238, 230, 226, .94);
-  border: 1.4cqw solid var(--frame);
-  box-shadow: 0 10px 24px -12px rgba(74, 40, 22, .45);
-}
-.frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.frame-initial {
-  font-family: var(--f-name);
-  font-style: italic;
-  font-size: 22cqw;
-  line-height: 1;
-  color: rgba(132, 103, 88, .32);
-}
-.frame-groom { left: 4cqw; top: 56cqw; width: 46cqw; transform: rotate(-11deg); }
-.frame-bride { left: 50cqw; top: 102cqw; width: 44cqw; transform: rotate(12deg); }
 .who {
   z-index: 3;
+  left: 0;
+  right: 0;
   display: grid;
   gap: 1cqw;
   line-height: 1;
+  text-align: center;
 }
 .who span {
   font-family: var(--f-text);
@@ -369,20 +352,17 @@ img { max-width: 100%; }
   font-size: 7.8cqw;
   color: var(--ink);
 }
-.who-groom { left: 55cqw; top: 82cqw; }
-.who-bride { right: 54cqw; top: 128cqw; text-align: right; }
+.who-groom { top: 68cqw; }
+.who-bride { top: 110cqw; }
 
-.cover-flowers, .frame, .who { transition: opacity 1.1s ease, transform 1.3s var(--ease); }
-.frame-bride, .who-bride { transition-delay: .18s; }
+.cover-flowers, .who { transition: opacity 1.1s ease, transform 1.3s var(--ease); }
 .who { transition-delay: .4s; }
 .paper:not(.is-playing) .cover-flowers { opacity: 0; transform: translateY(-4cqw); }
-.paper:not(.is-playing) .frame-groom { opacity: 0; transform: rotate(-2deg) translateY(6cqw); }
-.paper:not(.is-playing) .frame-bride { opacity: 0; transform: rotate(3deg) translateY(6cqw); }
 .paper:not(.is-playing) .who { opacity: 0; transform: translateY(3cqw); }
 
 /* Parallax offsets, written by GSAP (src/parallax.js). They live on `translate`, apart from each
    layer's own transform, so rotations and the entrance transitions above are untouched. */
-.cover-flowers, .cover-band, .frame, .who, .sprig, .closing-flowers { translate: 0 var(--py, 0px); }
+.cover-flowers, .cover-band, .who, .sprig, .closing-flowers { translate: 0 var(--py, 0px); }
 
 /* ---------- Sections ---------- */
 .block { position: relative; padding-block: 64px; }
@@ -550,13 +530,16 @@ img { max-width: 100%; }
 
 /* Gallery */
 .gallery-grid { display: grid; gap: 8px; width: 100%; margin-top: 8px; }
-.gallery-grid img { width: 100%; height: 100%; object-fit: cover; border-radius: 12px; display: block; }
+/* Each photo is a quarter taller than its tile and drifts inside it as the page scrolls (src/parallax.js).
+   Without the parallax it rests centred. */
+.gallery-tile { min-width: 0; overflow: hidden; border-radius: 12px; isolation: isolate; }
+.gallery-tile img { width: 100%; height: 125%; object-fit: cover; display: block; translate: 0 var(--gy, -10%); }
 .gallery-grid.count-2 { grid-template-columns: 1fr 1fr; aspect-ratio: 4 / 3; }
 .gallery-grid.count-3 { grid-template-columns: 1.45fr 1fr; grid-template-rows: 1fr 1fr; aspect-ratio: 1 / .78; }
-.gallery-grid.count-3 img:first-child { grid-row: span 2; }
-/* Four or more: portrait tiles, two to a row. */
+.gallery-grid.count-3 .gallery-tile:first-child { grid-row: span 2; }
+/* One photo, or four and more: portrait tiles, two to a row. */
 .gallery-grid.count-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.gallery-grid.count-4 img { aspect-ratio: 4 / 5; height: auto; }
+.gallery-grid:is(.count-1, .count-4) .gallery-tile { aspect-ratio: 4 / 5; }
 
 /* Dress code */
 .dress { padding-top: 120px; }
