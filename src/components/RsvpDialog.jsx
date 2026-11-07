@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { RSVP_ENDPOINT, guestCounts, event } from "../wedding.js";
 
 const ACCEPT = "Joyfully Accepts";
-const DECLINE = "Regretfully Declines";
+const DECLINE = "Sorry, I cannot make it";
 
 export default function RsvpDialog({ open, onClose, guest }) {
   const dialogRef = useRef(null);

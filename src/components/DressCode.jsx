@@ -9,7 +9,6 @@ export default function DressCode() {
         <h2 className="h" id="dress-h">
           Dress Code
         </h2>
-        <p className="lead small">Kindly dress in our colour palette</p>
         <ul className="swatches">
           {palette.map(({ name, hex }) => (
             <li key={name} className="swatch">

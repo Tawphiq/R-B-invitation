@@ -2,7 +2,7 @@ import { event } from "../wedding.js";
 
 const coords = `${event.lat.toFixed(7)}, ${event.lng.toFixed(7)}`;
 const q = `${event.lat.toFixed(6)},${event.lng.toFixed(6)}`;
-const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
+const mapsUrl = event.mapLink || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
 const embedUrl = `https://maps.google.com/maps?q=${encodeURIComponent(q)}&z=15&output=embed`;
 
 export default function Venue() {

@@ -554,6 +554,9 @@ img { max-width: 100%; }
 .gallery-grid.count-2 { grid-template-columns: 1fr 1fr; aspect-ratio: 4 / 3; }
 .gallery-grid.count-3 { grid-template-columns: 1.45fr 1fr; grid-template-rows: 1fr 1fr; aspect-ratio: 1 / .78; }
 .gallery-grid.count-3 img:first-child { grid-row: span 2; }
+/* Four or more: portrait tiles, two to a row. */
+.gallery-grid.count-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.gallery-grid.count-4 img { aspect-ratio: 4 / 5; height: auto; }
 
 /* Dress code */
 .dress { padding-top: 120px; }

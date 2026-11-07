@@ -13,7 +13,7 @@ const calendarUrl =
     location: `${event.venue}, ${event.town}, ${event.country}`,
     details: `Wedding celebration of ${couple.first} & ${couple.second}. Dress code: ${palette
       .map((c) => c.name.toLowerCase())
-      .join(", ")}.`,
+      .join(", ")}. Directions: ${event.mapLink}`,
   });
 
 function remaining(now) {

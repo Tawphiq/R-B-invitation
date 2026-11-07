@@ -18,6 +18,7 @@ npm run build     # production build in dist/
 | `src/assets/` | Watercolour florals, leaves and floral band artwork |
 | `src/styles.css` | Design tokens and styles |
 | `public/richmond-beatrice.ics` | Calendar file for Apple Calendar / Outlook |
+| `public/gallery/` | Photo Gallery images |
 | `public/music/` | Background music |
 | `rsvp-apps-script.gs` | Google Apps Script that saves RSVPs to a Google Sheet |
 
@@ -47,17 +48,17 @@ Share the resulting link with guests, for example over WhatsApp.
 
 ## Adding photos
 
-Put image files in `public/photos/` and list them in `photos` in `src/wedding.js`:
+Put image files in `public/` and list them in `photos` in `src/wedding.js`:
 
 ```js
 export const photos = {
   groom: "photos/richmond.jpg",   // tilted frame beside "Groom"
   bride: "photos/beatrice.jpg",   // tilted frame beside "Bride"
-  gallery: ["photos/1.jpg", "photos/2.jpg", "photos/3.jpg"],
+  gallery: ["gallery/1.jpeg", "gallery/2.jpeg", "gallery/3.jpeg", "gallery/4.jpeg"],
 };
 ```
 
-Empty frames show the couple's initials, and the Photo Gallery section stays hidden until `gallery` has photos. Three photos fill the layout best (one tall on the left, two stacked on the right).
+Empty frames show the couple's initials, and the Photo Gallery section stays hidden until `gallery` has photos. Three photos show as one tall on the left with two stacked on the right; four or more show as portrait tiles, two to a row (4:5, cropped from the centre).
 
 ## Personal links for guests
 
@@ -75,9 +76,11 @@ The envelope greets guests on every visit, including after a refresh. Links endi
 
 Tapping the envelope's "Open" seal starts the music (browsers only allow sound after a tap). Guests can pause it with the round button above the reply button, and it rests while the tab is in the background.
 
-To use your own song, put an MP3 in `public/music/` and set `music` in `src/wedding.js`, for example `music: "music/our-song.mp3"`. Keep it small (around 3 MB) since many guests open the link on mobile data. Set it to `""` to turn music off.
+The song is "Ordinary" by Alex Warren. It is a commercial recording, so the MP3 isn't included in this repo: save your own copy as `public/music/ordinary.mp3`. Until that file exists, the music button does nothing.
 
-The default track is Pachelbel's Canon in D performed by the Air Force Strings of the U.S. Air Force Band. As a work of the U.S. federal government it is in the public domain ([source](https://commons.wikimedia.org/wiki/File:Canon_(2004)_-_Strolling_Strings_-_United_States_Air_Force_Band.mp3)). It was trimmed and re-encoded at 96 kbps with a short fade at each end, so the loop is seamless.
+To change the song, put an MP3 in `public/music/` and set `music` in `src/wedding.js`, for example `music: "music/our-song.mp3"`. Keep it small (around 3 MB, e.g. 96–128 kbps) since many guests open the link on mobile data. Set it to `""` to turn music off.
+
+`public/music/canon-in-d.mp3` is the earlier track: Pachelbel's Canon in D by the Air Force Strings of the U.S. Air Force Band, public domain ([source](https://commons.wikimedia.org/wiki/File:Canon_(2004)_-_Strolling_Strings_-_United_States_Air_Force_Band.mp3)). Set `music: "music/canon-in-d.mp3"` to go back to it.
 
 ## Notes
 

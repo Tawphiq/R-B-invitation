@@ -16,8 +16,10 @@ export const event = {
   venue: "Esereso Divine Junction",
   town: "Kumasi",
   country: "Ghana",
-  lat: 6.65784,
-  lng: -1.560961,
+  // Pin shared by the couple; "Get directions" opens this link, the embedded map uses lat/lng.
+  mapLink: "https://maps.app.goo.gl/cJthc1GydB4NM2uG6",
+  lat: 6.630216,
+  lng: -1.55458,
 };
 
 export const palette = [
@@ -27,17 +29,17 @@ export const palette = [
   { name: "Beige", hex: "#DCCAAB" },
 ];
 
-// Photos: put image files in public/photos/ and list them here, e.g. "photos/richmond.jpg".
+// Photos: put image files in public/ and list them here, e.g. "photos/richmond.jpg" or "gallery/5.jpeg".
 // Empty frames show the couple's initials; the gallery section is hidden until it has photos.
 export const photos = {
   groom: "",
   bride: "",
-  gallery: [],
+  gallery: ["gallery/1.jpeg", "gallery/2.jpeg", "gallery/3.jpeg", "gallery/4.jpeg"],
 };
 
 // Background music, started by the envelope tap. Put an MP3 in public/music/ and name it here; "" turns music off.
-// Default: Pachelbel's Canon in D by the Air Force Strings (U.S. Air Force Band), public domain, via Wikimedia Commons.
-export const music = "music/canon-in-d.mp3";
+// "Ordinary" by Alex Warren: the MP3 is supplied by the couple (see README.md).
+export const music = "music/ordinary.mp3";
 
 export const closingLine ="Your presence would be the greatest gift we could receive!";
 
